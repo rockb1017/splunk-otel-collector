@@ -1891,6 +1891,8 @@ github.com/signalfx/gohistogram v0.0.0-20160107210732-1ccfd2ff5083 h1:WsShHmu12Z
 github.com/signalfx/gohistogram v0.0.0-20160107210732-1ccfd2ff5083/go.mod h1:adPDS6s7WaajdFBV9mQ7i0dKfQ8xiDnF9ZNETVPpp7c=
 github.com/signalfx/golib/v3 v3.5.0 h1:QkhT8P/iMkTRg7Zec+w8iLEQzzCEIfHHz/A4NJgLQyg=
 github.com/signalfx/golib/v3 v3.5.0/go.mod h1:yze2t+zCjUjUdtSPEmCyg2UDU7jCyIqJV++eprc9OeE=
+github.com/signalfx/splunk-otel-collector-components v0.2.0 h1:lRlzrbcRwURMoxVtzdfsMW1Q2x/tqyBMIVehpJjPKeA=
+github.com/signalfx/splunk-otel-collector-components v0.2.0/go.mod h1:elDLExfYM3z8A1pw5usVhtvch/O6dPA5/AGuI++TQEY=
 github.com/signalfx/telegraf v0.10.2-0.20250228233359-931557f78bed h1:UnMojeBM2skhiZm8Iol3RBQpUHWvAkt993NxWhiV/70=
 github.com/signalfx/telegraf v0.10.2-0.20250228233359-931557f78bed/go.mod h1:1gnMOcwGO3lAxfoMq28M8gjooF2MqVwquPVEvgZ1its=
 github.com/sijms/go-ora/v2 v2.9.0 h1:+iQbUeTeCOFMb5BsOMgUhV8KWyrv9yjKpcK4x7+MFrg=
