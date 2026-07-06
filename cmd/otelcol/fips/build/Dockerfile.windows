@@ -21,4 +21,6 @@ ENV GOEXPERIMENT=systemcrypto
 ENV EXTENSION=.exe
 
 WORKDIR /src
-RUN --mount=type=cache,target=${GOMODCACHE} make otelcol BUILD_INFO="${BUILD_INFO}"
+RUN --mount=type=cache,target=${GOMODCACHE} \
+    --mount=type=secret,id=private_modules_token \
+    cmd/otelcol/fips/build/build-otelcol.sh "${BUILD_INFO}"
