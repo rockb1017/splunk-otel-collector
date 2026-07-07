@@ -53,19 +53,22 @@ DOCKER_REPO?=docker.io
 GOTESPLIT_TOTAL?=1
 GOTESPLIT_INDEX?=0
 
-PRIVATE_MODULES?=github.com/signalfx/splunk-otel-collector-components
+PRIVATE_MODULES?=cd.splunkdev.com/gdi/unified-collector
+PRIVATE_MODULES_USER_FILE?=/run/secrets/private_modules_user
 PRIVATE_MODULES_TOKEN_FILE?=/run/secrets/private_modules_token
 WITH_PRIVATE_MODULES = \
+	private_modules_user_file="$(PRIVATE_MODULES_USER_FILE)"; \
 	private_modules_token_file="$(PRIVATE_MODULES_TOKEN_FILE)"; \
-	if [ -s "$$private_modules_token_file" ]; then \
+	if [ -s "$$private_modules_user_file" ] && [ -s "$$private_modules_token_file" ]; then \
+		private_modules_user="$$(cat "$$private_modules_user_file")"; \
 		private_modules_token="$$(cat "$$private_modules_token_file")"; \
 		export GOPRIVATE="$${GOPRIVATE:-$(PRIVATE_MODULES)}"; \
 		export GONOSUMDB="$${GONOSUMDB:-$(PRIVATE_MODULES)}"; \
 		export GIT_CONFIG_COUNT=1; \
-		export GIT_CONFIG_KEY_0="url.https://x-access-token:$${private_modules_token}@github.com/.insteadOf"; \
-		export GIT_CONFIG_VALUE_0="https://github.com/"; \
+		export GIT_CONFIG_KEY_0="url.https://$${private_modules_user}:$${private_modules_token}@cd.splunkdev.com/.insteadOf"; \
+		export GIT_CONFIG_VALUE_0="https://cd.splunkdev.com/"; \
 	elif [ "$${OTELCOL_REQUIRE_PRIVATE_MODULES_TOKEN:-false}" = "true" ]; then \
-		echo "private_modules_token BuildKit secret is required to fetch private Go modules" >&2; \
+		echo "private_modules_user and private_modules_token BuildKit secrets are required to fetch private Go modules" >&2; \
 		exit 1; \
 	fi;
 
@@ -371,6 +374,7 @@ endif
 	docker buildx build --pull \
 		--tag otelcol-fips-builder-$(GOOS)-$(GOARCH) \
 		--platform linux/$(GOARCH) \
+		--secret id=private_modules_user,env=OTELCOL_PRIVATE_MODULES_USER \
 		--secret id=private_modules_token,env=OTELCOL_PRIVATE_MODULES_TOKEN \
 		--build-arg DOCKER_REPO=$(DOCKER_REPO) \
 		--build-arg BUILD_INFO='$(BUILD_INFO)' \
