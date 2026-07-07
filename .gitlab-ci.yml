@@ -352,9 +352,7 @@ compile:
     - .trigger-filter
     - .go-cache
   tags: [large]
-  needs:
-    - job: manual_release_trigger
-      optional: true
+  needs: []
   parallel:
     matrix:
       - TARGET: [binaries-darwin_amd64, binaries-darwin_arm64, binaries-linux_amd64, binaries-linux_arm64, binaries-windows_amd64, binaries-windows_arm64, binaries-linux_ppc64le]
@@ -481,6 +479,8 @@ sign-exe:
     - .submit-signing-request
   retry: 2
   needs:
+    - job: manual_release_trigger
+      optional: true
     - compile
     - otelcol-fips
   parallel:
@@ -505,6 +505,8 @@ sign-osx:
     - .submit-signing-request
   retry: 2
   needs:
+    - job: manual_release_trigger
+      optional: true
     - compile
   parallel:
     matrix:
@@ -594,6 +596,8 @@ pack-ta-v2:
     - .trigger-filter
     - .go-cache
   needs:
+    - job: manual_release_trigger
+      optional: true
     - job: sign-exe
       artifacts: true
     - job: compile
@@ -806,6 +810,8 @@ verify-signed-packages:
 build-push-linux-image:
   extends: .trigger-filter
   needs:
+    - job: manual_release_trigger
+      optional: true
     - job: compile
       artifacts: true
   retry: 2
@@ -1660,6 +1666,8 @@ github-release:
     - .go-cache
   tags: [large]
   needs:
+    - job: manual_release_trigger
+      optional: true
     - job: compile
       artifacts: true
     - job: otelcol-fips
